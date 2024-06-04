@@ -1,0 +1,44 @@
+alias: Jeff's Office Light
+description: ""
+trigger:
+  - platform: state
+    entity_id:
+      - binary_sensor.jterrace_glinux_camera_on
+      - binary_sensor.jterrace_glinux_monitor_on
+    from: null
+    to: null
+condition: []
+action:
+  - choose:
+      - conditions:
+          - condition: state
+            entity_id: binary_sensor.jterrace_glinux_camera_on
+            state: "on"
+        sequence:
+          - service: light.turn_on
+            target:
+              entity_id: light.jeff_s_office_status_light
+            data:
+              rgb_color:
+                - 255
+                - 0
+                - 0
+      - conditions:
+          - condition: state
+            entity_id: binary_sensor.jterrace_glinux_monitor_on
+            state: "on"
+        sequence:
+          - service: light.turn_on
+            target:
+              entity_id: light.jeff_s_office_status_light
+            data:
+              rgb_color:
+                - 0
+                - 255
+                - 0
+    default:
+      - service: light.turn_off
+        target:
+          entity_id: light.jeff_s_office_status_light
+        data: {}
+mode: single
