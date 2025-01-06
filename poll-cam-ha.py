@@ -39,8 +39,11 @@ def post_entity_status(device_name, friendly_name, state):
 
 def get_camera_status():
   raw = None
-  with open('/sys/module/uvcvideo/refcnt', 'r') as f:
-    raw = f.read().strip()
+  try:
+    with open('/sys/module/uvcvideo/refcnt', 'r') as f:
+      raw = f.read().strip()
+  except FileNotFoundError:
+    return False
   return False if raw == '0' else True
 
 
